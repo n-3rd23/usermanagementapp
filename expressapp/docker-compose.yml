@@ -1,0 +1,31 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: user_db
+    volumes:
+      - user-pg-data:/var/lib/postgresql/data
+    restart: unless-stopped
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    depends_on:
+      - postgres
+    ports:
+      - "5555:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@userapp.com
+      PGADMIN_DEFAULT_PASSWORD: User@123
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
+volumes:
+  user-pg-data:
+  pgadmin-data:
